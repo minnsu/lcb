@@ -1,0 +1,18 @@
+# Frontend react dependencies
+- apt install git python3 curl
+
+# Install nvm & nodejs
+- curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash # install nvm
+- nvm install --lts # install LTS version
+
+# Create react app
+- npm install -g create-react-app
+
+
+# LangChain dependencies
+- apt install pip
+- pip install langchain torch transformers
+
+# Download model
+- apt install git-lfs
+- git lfs clone https://huggingface.co/[repo]
