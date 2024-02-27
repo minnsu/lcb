@@ -12,6 +12,7 @@
 # LangChain dependencies
 - apt install pip
 - pip install langchain torch transformers
+- pip install accelerate
 
 # Download model
 - apt install git-lfs
