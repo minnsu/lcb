@@ -12,7 +12,8 @@
 # LangChain dependencies
 - apt install pip
 - pip install langchain torch transformers
-- pip install accelerate
+- pip install accelerate # device_map='auto'
+- pip install -i accelerate # for quantization like load_in_8bit
 
 # Download model
 - apt install git-lfs
