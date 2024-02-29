@@ -14,8 +14,9 @@
 - pip install langchain torch transformers
 - pip install accelerate # device_map='auto'
 - pip install -i accelerate # for quantization like load_in_8bit
-- pip install chromadb
-- pip install sentence-transformers
+- pip install chromadb # vector store
+- pip install sentence-transformers # sentence embedding
+- pip install pypdf # PDF loader
 
 
 # Download model
