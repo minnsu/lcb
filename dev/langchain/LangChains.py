@@ -1,12 +1,21 @@
 import torch
 import langchain
 
+if torch.cuda.is_available():
+    torch.set_default_device('cuda')
+
 # LLM pipe node
-from transformers import pipeline, AutoModelForCausalLM, AutoTokenizer
+from transformers import pipeline, AutoModel, AutoModelForCausalLM, AutoTokenizer
 from langchain_community.llms.huggingface_pipeline import HuggingFacePipeline
 
+def get_model_and_tokenizer(model_path, load_in_8bit: bool=False):
+    model = AutoModelForCausalLM.from_pretrained(model_path, device_map='auto', torch_dtype=torch.bfloat16, load_in_8bit=load_in_8bit)
+    tokenizer = AutoTokenizer.from_pretrained(model_path)
+    return (model, tokenizer)
+    
+
 def make_llm_pipe(model_path: str, task: str, max_new_tokens: int=512, temperature: float=0.6, top_p: float=0.95, repetition_penalty: float=1.2, load_in_8bit: bool=True):
-    model = AutoModelForCausalLM.from_pretrained(model_path, device_map='auto', torch_dtype=torch.float16, load_in_8bit=load_in_8bit)
+    model = AutoModelForCausalLM.from_pretrained(model_path, device_map='auto', torch_dtype=torch.bfloat16, load_in_8bit=load_in_8bit)
     tokenizer = AutoTokenizer.from_pretrained(model_path)
     hf_pipe = pipeline(task=task, model=model, tokenizer=tokenizer, max_new_tokens=max_new_tokens, do_sample=True, temperature=temperature, top_p=top_p, repetition_penalty=repetition_penalty)
     lc_pipe = HuggingFacePipeline(pipeline=hf_pipe)
@@ -84,3 +93,20 @@ def make_chain(llm, prompt=None, memory_path=None, verbose=True):
         memory=memory,
     )
     return chain
+
+from langchain.document_loaders import WebBaseLoader, TextLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.vectorstores import Chroma
+
+import HuggingFaces as hf
+
+class Embedding:
+    def __init__(self):
+        embed_model, embed_tokenizer = hf.load_embedding_model('/workspace/llms/all-MiniLM-L6-v2')
+        self.embed_model = embed_model
+        self.embed_tokenizer = embed_tokenizer
+
+    def embed_documents(self, texts):
+        input_ids = self.embed_tokenizer(texts, return_tensors='pt').input_ids
+        embedded = self.embed_model(input_ids)
+        return embedded.pooler_output
