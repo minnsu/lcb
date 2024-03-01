@@ -1,4 +1,3 @@
-# Make or load vector DB
 from langchain.vectorstores import Chroma
 from langchain_community.embeddings.sentence_transformer import SentenceTransformerEmbeddings
 
