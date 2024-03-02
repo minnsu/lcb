@@ -1,10 +1,4 @@
-/node_modules
-/*.json
-
 /dev/langchain/test_db
 /dev/langchain/a.pdf
-
-/dev/react/node_modules
-/dev/react/build
 
 /dev/backend/__pycache__

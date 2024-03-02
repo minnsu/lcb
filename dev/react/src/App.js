@@ -7,7 +7,7 @@ import $ from 'jquery';
 function Left(props) {
   return (
     <div className="Left">
-      <h2>Chat Assistant</h2>
+      <h2>The Chat</h2>
       <SettingSVG className="SettingSVG" onClick={function () {
         $(".SettingPopupPage").show();
       }}></SettingSVG>
@@ -25,16 +25,32 @@ function SettingPopupPage(props) {
     <div className="SettingPopupPage">
       <b id="SettingPopupPage_Title">Setting</b>
       <form className="SettingForm">
-        {/* 
-        // Model select
-        // Parameter - 
-        top_p
-        temperature
-        repetition_penalty
-        max_tokens
-        etc.
-         */}
+        <b>Storage path </b><input type="text"></input>
+        <hr></hr>
+        <b>Model path </b><input type="text"></input>
+        <hr></hr>
+        <b>Model Parameters </b>
+        <br></br>
+        [ Temperature ]
+        <br></br>
+        0 <input name="temperature" type="range" min="0" max="1" step="0.01"></input> 1
+        
+        <br></br>
+        [ Top p ]
+        <br></br>
+        0 <input name="top_p" type="range" min="0" max="1" step="0.01"></input> 1
+        
+        <br></br>
+        [ Repetition penalty ]
+        <br></br>
+        1 <input name="repetition_penalty" type="range" min="1" max="2" step="0.01"></input> 2
+        
+        <br></br>
+        [ Max tokens ]
+        <br></br>
+        2^5 <input name="max_tokens" type="range" min="5" max="12" step="1"></input> 2^12
       </form>
+
       <div className="SettingPopupPage_Buttons">
         <button id="SettingForm_Apply" onClick={function() {
           alert("Click Setting Apply");
@@ -112,9 +128,13 @@ function OptionPopupPage(props) {
         }}>Close</button>
       </div>
       <form className="OptionForm">
-        {/* // URL based
-        // PDF file
-        // Context */}
+        <b>Search</b><input type="checkbox" value="Search" disabled></input> - Currently Disabled -
+        <hr></hr>
+        <b>Select PDF/TXT file </b><input type="file"></input>
+        <hr></hr>
+        <b>Context</b>
+        <br></br>
+        <textarea rows="14" cols="64"></textarea>
       </form>
     </div>
   )

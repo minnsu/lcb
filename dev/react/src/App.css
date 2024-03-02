@@ -12,8 +12,8 @@
 }
 
 .SettingPopupPage {
-  width: 700px;
-  height: 900px;
+  width: 500px;
+  height: 400px;
 
   position: fixed;
   left: 50%;
@@ -29,14 +29,17 @@
   font-size: 30px;
 }
 .SettingPopupPage .SettingForm {
-  width: 98%;
-  height: 90%;
+  width: 94%;
+  height: 73%;
 
-  margin: 1%;
+  margin: 2%;
+  padding: 1%;
   border: 1px #000000 solid;
+
+  text-align: left;
 }
 .SettingPopupPage_Buttons {
-  margin-right: 1%;
+  margin-right: 2%;
   text-align: right;
 }
 .SettingPopupPage_Buttons button {
@@ -86,13 +89,13 @@
   vertical-align: middle;
 }
 .OptionPopupPage {
-  width: 700px;
-  height: 300px;
+  width: 500px;
+  height: 400px;
 
   position: fixed;
   left: 50%;
   bottom: 50%;
-  transform: translate(-70%, -10%);
+  transform: translate(-50%, -10%);
 
   display: none;
   background-color: #eff7ff;
@@ -108,10 +111,16 @@
   height: 25px;
 }
 .OptionPopupPage .OptionForm {
-  width: 98%;
-  height: 85%;
+  width: 94%;
+  height: 82%;
 
-  margin: 1%;
+  margin: 2%;
+  padding: 1%;
+  border: 1px #000000 solid;
+
+  text-align: left;
+}
+.OptionForm textarea {
   border: 1px #000000 solid;
 }
 
