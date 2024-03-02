@@ -2,18 +2,48 @@ import './App.css';
 import {ReactComponent as EnterSVG} from './enter.svg';
 import {ReactComponent as SettingSVG} from './setting.svg';
 import {ReactComponent as AdjustSVG} from './adjust.svg';
+import $ from 'jquery';
 
 function Left(props) {
   return (
     <div className="Left">
-      <h2>Title</h2>
+      <h2>Chat Assistant</h2>
       <SettingSVG className="SettingSVG" onClick={function () {
-        alert("Click Setting!");
+        $(".SettingPopupPage").show();
       }}></SettingSVG>
+      <SettingPopupPage></SettingPopupPage>
       <hr></hr>
       <ChatListItem title='Chat 1'></ChatListItem>
       <ChatListItem title='Chat 2'></ChatListItem>
       <ChatListItem title='Chat 3'></ChatListItem>
+    </div>
+  )
+}
+
+function SettingPopupPage(props) {
+  return (
+    <div className="SettingPopupPage">
+      <b id="SettingPopupPage_Title">Setting</b>
+      <form className="SettingForm">
+        {/* 
+        // Model select
+        // Parameter - 
+        top_p
+        temperature
+        repetition_penalty
+        max_tokens
+        etc.
+         */}
+      </form>
+      <div className="SettingPopupPage_Buttons">
+        <button id="SettingForm_Apply" onClick={function() {
+          alert("Click Setting Apply");
+          // fetch("localhost:8000/api/");
+        }}>Apply</button>
+        <button id="SettingPopupPage_Close" onClick={function() {
+          $(".SettingPopupPage").hide();
+        }}>Close</button>
+      </div>
     </div>
   )
 }
@@ -61,8 +91,9 @@ function Input(props) {
     <div className="Input">
       <form className="InputForm">
         <AdjustSVG id="InputForm_Option" onClick={function() {
-          alert("Click Adjust!");
+          $(".OptionPopupPage").show();
         }}>+</AdjustSVG>
+        <OptionPopupPage></OptionPopupPage>
         <input type="text" id="InputForm_Text"></input>
         <EnterSVG id="InputForm_Send" onClick={function() {
           alert("Click Enter!");
@@ -72,6 +103,22 @@ function Input(props) {
   )
 }
 
+function OptionPopupPage(props) {
+  return (
+    <div className="OptionPopupPage">
+      <div className="OptionPopupPage_Buttons">
+        <button id="OptionPopupPage_Close" onClick={function() {
+          $(".OptionPopupPage").hide();
+        }}>Close</button>
+      </div>
+      <form className="OptionForm">
+        {/* // URL based
+        // PDF file
+        // Context */}
+      </form>
+    </div>
+  )
+}
 
 function App() {
   return (

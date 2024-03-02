@@ -11,6 +11,39 @@
   background-color: #66AAFF;
 }
 
+.SettingPopupPage {
+  width: 700px;
+  height: 900px;
+
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-30%, -60%);
+
+  display: none;
+  background-color: #eff7ff;
+  border: 1px #000000 solid;
+  border-radius: 10px;
+}
+#SettingPopupPage_Title {
+  font-size: 30px;
+}
+.SettingPopupPage .SettingForm {
+  width: 98%;
+  height: 90%;
+
+  margin: 1%;
+  border: 1px #000000 solid;
+}
+.SettingPopupPage_Buttons {
+  margin-right: 1%;
+  text-align: right;
+}
+.SettingPopupPage_Buttons button {
+  width: 70px;
+  height: 25px;
+}
+
 .SettingSVG {
   width: 30px;
   height: 30px;
@@ -52,6 +85,36 @@
   border: 1px #000000 solid;
   vertical-align: middle;
 }
+.OptionPopupPage {
+  width: 700px;
+  height: 300px;
+
+  position: fixed;
+  left: 50%;
+  bottom: 50%;
+  transform: translate(-70%, -10%);
+
+  display: none;
+  background-color: #eff7ff;
+  border: 1px #000000 solid;
+  border-radius: 10px;
+}
+.OptionPopupPage_Buttons {
+  margin: 1%;
+  text-align: right;
+}
+.OptionPopupPage_Buttons button{
+  width: 70px;
+  height: 25px;
+}
+.OptionPopupPage .OptionForm {
+  width: 98%;
+  height: 85%;
+
+  margin: 1%;
+  border: 1px #000000 solid;
+}
+
 .InputForm #InputForm_Text {
   width: 35vi;
   height: 30px;
