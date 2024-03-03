@@ -25,36 +25,49 @@ function SettingPopupPage(props) {
     <div className="SettingPopupPage">
       <b id="SettingPopupPage_Title">Setting</b>
       <form className="SettingForm">
-        <b>Storage path </b><input type="text"></input>
+        <b>Storage path </b><input id="storage_path" type="text"></input>
         <hr></hr>
-        <b>Model path </b><input type="text"></input>
+        <b>Model path </b><input id="model_path" type="text"></input>
         <hr></hr>
         <b>Model Parameters </b>
         <br></br>
         [ Temperature ]
         <br></br>
-        0 <input name="temperature" type="range" min="0" max="1" step="0.01"></input> 1
-        
+        0 <input id="temperature" type="range" min="0" max="1" step="0.01"></input> 1
         <br></br>
         [ Top p ]
         <br></br>
-        0 <input name="top_p" type="range" min="0" max="1" step="0.01"></input> 1
-        
+        0 <input id="top_p" type="range" min="0" max="1" step="0.01"></input> 1
         <br></br>
         [ Repetition penalty ]
         <br></br>
-        1 <input name="repetition_penalty" type="range" min="1" max="2" step="0.01"></input> 2
-        
+        1 <input id="repetition_penalty" type="range" min="1" max="2" step="0.01"></input> 2
         <br></br>
-        [ Max tokens ]
+        [ Max new tokens ]
         <br></br>
-        2^5 <input name="max_tokens" type="range" min="5" max="12" step="1"></input> 2^12
+        2^5 <input id="max_new_tokens" type="range" min="5" max="12" step="1"></input> 2^12
       </form>
 
       <div className="SettingPopupPage_Buttons">
         <button id="SettingForm_Apply" onClick={function() {
-          alert("Click Setting Apply");
-          // fetch("localhost:8000/api/");
+          let setting_input = {};
+          document.querySelectorAll(".SettingForm input").forEach(
+            (e) => {
+              if(parseFloat(e.value))
+                setting_input[e.id] = parseFloat(e.value);
+              else
+                setting_input[e.id] = e.value;
+            }
+          );
+          fetch("http://localhost:8000/api/setting", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify(setting_input)
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+          });
         }}>Apply</button>
         <button id="SettingPopupPage_Close" onClick={function() {
           $(".SettingPopupPage").hide();
@@ -67,7 +80,11 @@ function SettingPopupPage(props) {
 function ChatListItem(props) {
   return (
     <p className="ChatListItem" onClick={function () {
-      alert("Click " + props.title);
+      fetch("http://localhost:8000/api/messages?title=" + props.title)
+      .then(response => response.json())
+      .then(result => {
+        console.log(result);
+      })
     }}>
       {props.title}
     </p>
@@ -105,14 +122,28 @@ function Message(props) {
 function Input(props) {
   return (
     <div className="Input">
+      <OptionPopupPage></OptionPopupPage>
       <form className="InputForm">
         <AdjustSVG id="InputForm_Option" onClick={function() {
           $(".OptionPopupPage").show();
         }}>+</AdjustSVG>
-        <OptionPopupPage></OptionPopupPage>
-        <input type="text" id="InputForm_Text"></input>
+        <textarea id="InputForm_Text"></textarea>
         <EnterSVG id="InputForm_Send" onClick={function() {
-          alert("Click Enter!");
+          let input_dom = document.getElementById("InputForm_Text");
+          let input_message = {
+            text: input_dom.value
+          };
+          fetch("http://localhost:8000/api/input", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify(input_message)
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+            // Receive and add to main area messages
+          });
+          input_dom.value = "";
         }}>Send</EnterSVG>
       </form>
     </div>
@@ -124,17 +155,33 @@ function OptionPopupPage(props) {
     <div className="OptionPopupPage">
       <div className="OptionPopupPage_Buttons">
         <button id="OptionPopupPage_Close" onClick={function() {
+          let option_input = {
+            search: "disabled",
+            file_path: document.getElementById("filepath").value,
+            text_context: document.getElementById("text_context").value
+          };
+          
+          fetch("http://localhost:8000/api/option", {
+            method: "POST",
+            headers: {"Content-type": "application/json"},
+            body: JSON.stringify(option_input)
+          })
+          .then(response => response.json())
+          .then(result => {
+            console.log(result);
+          });
+
           $(".OptionPopupPage").hide();
         }}>Close</button>
       </div>
       <form className="OptionForm">
-        <b>Search</b><input type="checkbox" value="Search" disabled></input> - Currently Disabled -
+        <b>Search</b><input id="search" type="checkbox" disabled></input> - Currently Disabled -
         <hr></hr>
-        <b>Select PDF/TXT file </b><input type="file"></input>
+        <b>PDF/TXT file path </b><input id="filepath" type="text"></input>
         <hr></hr>
         <b>Context</b>
         <br></br>
-        <textarea rows="14" cols="64"></textarea>
+        <textarea id="text_context" rows="14" cols="64"></textarea>
       </form>
     </div>
   )

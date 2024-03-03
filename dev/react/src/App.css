@@ -130,7 +130,8 @@
   
   margin: 0 5px 0 5px;
 
-  /* border: none; */
+  vertical-align: middle;
+  font-size: 25px;
 }
 .InputForm #InputForm_Send {
   width: 30px;
