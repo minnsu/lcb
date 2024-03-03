@@ -1,6 +1,8 @@
 from typing import Optional
 from pydantic import BaseModel
 
+class Title(BaseModel):
+    title: str
 class Input(BaseModel):
     text: str
 

@@ -1,3 +1,6 @@
+import React, {useState} from 'react';
+import ReactDOM from 'react-dom/client';
+
 import './App.css';
 import {ReactComponent as EnterSVG} from './enter.svg';
 import {ReactComponent as SettingSVG} from './setting.svg';
@@ -13,9 +16,29 @@ function Left(props) {
       }}></SettingSVG>
       <SettingPopupPage></SettingPopupPage>
       <hr></hr>
-      <ChatListItem title='Chat 1'></ChatListItem>
-      <ChatListItem title='Chat 2'></ChatListItem>
-      <ChatListItem title='Chat 3'></ChatListItem>
+      <div id="ChatListWrapper">
+        <ChatList titles={["Chat_1", "Chat_2", "Chat_3"]}></ChatList>
+      </div>
+
+      <b>Title</b> <input id="NewChatTitle" type="text"></input>
+      <button id="AddNewChat" onClick={function() {
+        let newchat = {
+          title: document.getElementById("NewChatTitle").value
+        }
+        fetch("http://localhost:8000/api/newchat", {
+          method: "POST",
+          headers: {"Content-type": "application/json"},
+          body: JSON.stringify(newchat)
+        })
+        .then(response => response.json())
+        .then(result => {
+          console.log(result);
+          let messages = document.getElementsByClassName("Message");
+          while(messages.length) {
+            messages[0].remove();
+          }
+        })
+      }}>Add new chat</button>
     </div>
   )
 }
@@ -25,27 +48,17 @@ function SettingPopupPage(props) {
     <div className="SettingPopupPage">
       <b id="SettingPopupPage_Title">Setting</b>
       <form className="SettingForm">
-        <b>Storage path </b><input id="storage_path" type="text"></input>
-        <hr></hr>
-        <b>Model path </b><input id="model_path" type="text"></input>
-        <hr></hr>
-        <b>Model Parameters </b>
-        <br></br>
-        [ Temperature ]
-        <br></br>
-        0 <input id="temperature" type="range" min="0" max="1" step="0.01"></input> 1
-        <br></br>
-        [ Top p ]
-        <br></br>
-        0 <input id="top_p" type="range" min="0" max="1" step="0.01"></input> 1
-        <br></br>
-        [ Repetition penalty ]
-        <br></br>
-        1 <input id="repetition_penalty" type="range" min="1" max="2" step="0.01"></input> 2
-        <br></br>
-        [ Max new tokens ]
-        <br></br>
-        2^5 <input id="max_new_tokens" type="range" min="5" max="12" step="1"></input> 2^12
+        <b>Storage path </b><input id="storage_path" type="text"></input><hr/>
+        <b>Model path </b><input id="model_path" type="text"></input><hr/>
+        <b>Model Parameters </b><br/>
+        [ Temperature ]<br/>
+        0 <input id="temperature" type="range" min="0" max="1" step="0.01"></input> 1 <br/>
+        [ Top p ]<br/>
+        0 <input id="top_p" type="range" min="0" max="1" step="0.01"></input> 1 <br/>
+        [ Repetition penalty ]<br/>
+        1 <input id="repetition_penalty" type="range" min="1" max="2" step="0.01"></input> 2<br/>
+        [ Max new tokens ]<br/>
+        2^5 <input id="max_new_tokens" type="range" min="5" max="12" step="1"></input> 2^12<br/>
       </form>
 
       <div className="SettingPopupPage_Buttons">
@@ -66,13 +79,27 @@ function SettingPopupPage(props) {
           })
           .then(response => response.json())
           .then(result => {
-            console.log(result);
+            let chatlistwrapper = document.getElementById("ChatListWrapper");
+            chatlistwrapper.removeChild(chatlistwrapper.firstChild);
+            
+            let root = ReactDOM.createRoot(chatlistwrapper);
+            root.render(<ChatList titles={result.titles}/>);
           });
         }}>Apply</button>
         <button id="SettingPopupPage_Close" onClick={function() {
           $(".SettingPopupPage").hide();
         }}>Close</button>
       </div>
+    </div>
+  )
+}
+
+function ChatList(props) {
+  return (
+    <div id="ChatList">
+      {props.titles.map((_title, idx) =>(
+        <ChatListItem title={_title}></ChatListItem>
+      ))}
     </div>
   )
 }
@@ -84,6 +111,10 @@ function ChatListItem(props) {
       .then(response => response.json())
       .then(result => {
         console.log(result);
+        let messages = document.getElementsByClassName("Message");
+        while(messages.length) {
+          messages[0].remove();
+        }
       })
     }}>
       {props.title}

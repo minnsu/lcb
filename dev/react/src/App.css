@@ -55,6 +55,17 @@
 .ChatListItem {
   font-weight: bold;
 }
+#NewChatTitle {
+  width: 120px;
+  border-radius: 5px;
+}
+#AddNewChat {
+  margin-top: 1vh;
+  height: 2vh;
+
+  background-color: #aeffff;
+  border-radius: 10px;
+}
 
 .Right {
   flex: 9;

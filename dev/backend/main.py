@@ -19,9 +19,16 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Server": "Open"}
+    return {"server": "open"}
 
-from formats import Input, Setting, Option
+from formats import Title, Input, Setting, Option
+
+@app.post("/api/newchat")
+def post_newchat(title: Title):
+    title_dict = title.dict()
+    print(title_dict)
+
+    return {"title": title_dict["title"]}
 
 @app.get("/api/messages")
 def get_messages(title: str):
@@ -29,7 +36,7 @@ def get_messages(title: str):
 
     # load messages and send to client
 
-    return {"Title": title, "Messages": ["message 1", "message 2", "message 3"]}
+    return {"title": title, "messages": ["message 1", "message 2", "message 3"]}
 
 @app.post("/api/setting")
 def post_setting(setting: Setting):
@@ -38,7 +45,7 @@ def post_setting(setting: Setting):
 
     # Send setting to lc_package
     
-    return {"Setting": setting_dict, "Titles": ["Chat 1", "Chat 2", "Chat 3"]}
+    return {"setting": setting_dict, "titles": ["Chat 1", "Chat 2", "Chat 3"]}
 
 @app.post("/api/option")
 def post_input(option: Option):
@@ -47,7 +54,7 @@ def post_input(option: Option):
 
     # Send option to lc_package
 
-    return {"Option": option_dict}
+    return {"option": option_dict}
 
 @app.post("/api/input")
 def post_input(input: Input):
@@ -56,4 +63,4 @@ def post_input(input: Input):
 
     # Send and receive message
 
-    return {"Input": input_dict["text"], "Output": "<<Sample>>"}
+    return {"input": input_dict["text"], "output": "<<Sample>>"}
